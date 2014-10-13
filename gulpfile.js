@@ -1,5 +1,6 @@
 var gulp = require("gulp");
 var browserify = require('gulp-browserify');
+var jshint = require('gulp-jshint');
 var gutil = require('gulp-util');
 var gulp = require('gulp');
 var jest = require('jest-cli');
@@ -12,7 +13,13 @@ var jestConfig = {
     scriptPreprocessor: '../tools/jest-preprocessor.js',
 };
 
-gulp.task('build', function() {
+gulp.task('jshint', function() {
+    gulp.src(rootDir + '/**/*.js')
+        .pipe(jshint({ esnext: true }))
+        .pipe(jshint.reporter('default'));
+});
+
+gulp.task('build', ['jshint'], function() {
     gulp.src(rootDir + '/app.js')
         .pipe(browserify({
             transform: [

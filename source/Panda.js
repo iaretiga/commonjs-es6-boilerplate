@@ -14,7 +14,7 @@ class Panda {
     }
 
     getStatus() {
-        var kind = this._happy ? 'happy' : 'sad'
+        var kind = this._happy ? 'happy' : 'sad';
         return `${ this.getName() } is a ${ kind } panda.`;
     }
 }
