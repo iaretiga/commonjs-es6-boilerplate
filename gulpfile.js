@@ -3,29 +3,21 @@ var browserify = require('gulp-browserify');
 var gutil = require('gulp-util');
 var gulp = require('gulp');
 var jest = require('jest-cli');
+var jstransformVisitors = require('./tools/jstransformVisitors');
 
 var rootDir = 'source';
 
 var jestConfig = {
     rootDir: rootDir,
-    scriptPreprocessor: '../jest-preprocessor.js',
+    scriptPreprocessor: '../tools/jest-preprocessor.js',
 };
 
 gulp.task('build', function() {
     gulp.src(rootDir + '/app.js')
         .pipe(browserify({
-            transform: [[
-                {
-                    visitors: [
-                        'jstransform/visitors/es6-arrow-function-visitors',
-                        'jstransform/visitors/es6-class-visitors',
-                        'jstransform/visitors/es6-object-short-notation-visitors',
-                        'jstransform/visitors/es6-rest-param-visitors',
-                        'jstransform/visitors/es6-template-visitors'
-                    ]
-                },
-                'jstransformify'
-            ]]
+            transform: [
+                [ { visitors: jstransformVisitors }, 'jstransformify' ]
+            ]
         }))
         .pipe(gulp.dest('./build'))
 });
