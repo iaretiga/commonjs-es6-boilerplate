@@ -1,6 +1,7 @@
 var gulp = require("gulp");
 var browserify = require('gulp-browserify');
 var jshint = require('gulp-jshint');
+var jshintStylish = require('jshint-stylish');
 var gutil = require('gulp-util');
 var gulp = require('gulp');
 var jest = require('jest-cli');
@@ -16,7 +17,7 @@ var jestConfig = {
 gulp.task('jshint', function() {
     gulp.src(rootDir + '/**/*.js')
         .pipe(jshint({ esnext: true }))
-        .pipe(jshint.reporter('default'));
+        .pipe(jshint.reporter(jshintStylish));
 });
 
 gulp.task('build', ['jshint'], function() {
