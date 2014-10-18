@@ -36,6 +36,11 @@ gulp.task('build-js', ['jshint'], function() {
                 [ { visitors: jstransformVisitors }, 'jstransformify' ]
             ]
         }))
+        .on('error', function(err) {
+            console.error('=== BROWSERIFY BUILD FAILED ===');
+            console.error(err.message);
+            console.error('===============================');
+        })
         .pipe(gulp.dest(config.buildRoot));
 });
 
@@ -43,6 +48,11 @@ gulp.task('build-less', function () {
     console.log('Building CSS from main less files found at ' + config.sourceRoot + '.');
     gulp.src(config.sourceRoot + '/*.less')
         .pipe(less())
+        .on('error', function(err) {
+            console.error('=== LESS COMPILATION FAILED ===');
+            console.error(err.message);
+            console.error('===============================');
+        })
         .pipe(gulp.dest(config.buildRoot));
 });
 
