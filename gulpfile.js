@@ -1,12 +1,12 @@
 var gulp = require("gulp");
+var gutil = require('gulp-util');
 var browserify = require('gulp-browserify');
 var webserver = require('gulp-webserver');
 var jshint = require('gulp-jshint');
 var jshintStylish = require('jshint-stylish');
-var gutil = require('gulp-util');
-var gulp = require('gulp');
 var jest = require('jest-cli');
 var jstransformVisitors = require('./tools/jstransformVisitors');
+var less = require('gulp-less');
 
 var config = {
     // directory containing your source files
@@ -30,11 +30,19 @@ gulp.task('build-js', ['jshint'], function() {
     console.log('Building ' + config.mainScript + '.');
     gulp.src(config.sourceRoot + '/' + config.mainScript)
         .pipe(browserify({
+            /* PENDING: deprecated */
             debug: !gulp.env.production,
             transform: [
                 [ { visitors: jstransformVisitors }, 'jstransformify' ]
             ]
         }))
+        .pipe(gulp.dest(config.buildRoot));
+});
+
+gulp.task('build-less', function () {
+    console.log('Building CSS from main less files found at ' + config.sourceRoot + '.');
+    gulp.src(config.sourceRoot + '/*.less')
+        .pipe(less())
         .pipe(gulp.dest(config.buildRoot));
 });
 
@@ -44,13 +52,13 @@ gulp.task('build-html', function() {
         .pipe(gulp.dest(config.buildRoot));
 });
 
-gulp.task('build', ['build-js', 'build-html'], function() {});
+gulp.task('build', ['build-js', 'build-less', 'build-html'], function() {});
 
 gulp.task('watch', function(done) {
-    console.log('Watching js and html files, rebuilding them on change.');
-    gulp.watch([config.sourceRoot + '/**/*.js'], ['build']);
+    console.log('Watching **/*.js, **/*.less and index.html files, rebuilding them on change.');
+    gulp.watch([config.sourceRoot + '/**/*.js'], ['build-js']);
+    gulp.watch([config.sourceRoot + '/**/*.less'], ['build-less']);
     gulp.watch([config.sourceRoot + '/index.html'], ['build-html']);
-
 });
 
 gulp.task('test', function(done) {
