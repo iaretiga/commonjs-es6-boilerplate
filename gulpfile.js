@@ -30,6 +30,7 @@ gulp.task('build-js', ['jshint'], function() {
     console.log('Building ' + config.mainScript + '.');
     gulp.src(config.sourceRoot + '/' + config.mainScript)
         .pipe(browserify({
+            debug: !gulp.env.production,
             transform: [
                 [ { visitors: jstransformVisitors }, 'jstransformify' ]
             ]
