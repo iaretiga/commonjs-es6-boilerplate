@@ -1,20 +1,6 @@
 # CommonJS ES6 Boilerplate
 
-This is a boilerplate for single-page web applications using CommonJS modules and LESS CSS preprocessor.
-
-## ES6 syntactic sugar
-
-This setup supports many awesome features of EcmaScript 6, while not requiring any ES6 runtime utilty code. The build process transpiles your ES6 code into ES5. The following ES6 features are supported:
-
-- ES6 arrow functions
-- ES6 classes
-- ES6 object short notation
-- ES6 rest parameters
-- ES6 template literals
-
-You can set which of these ES6 transpilers you need by editing `tools/jsTransformVisitors.js`. All transpilers are enabled by default.
-
-Instead of ES6 modules, I opted for CommonJS via Browserify. This lets you `require()` any modules from NPM, and mix-and-match with your cutting edge ES6 code.
+This is a boilerplate for single-page web applications using CommonJS modules, ES6 (with Babel) and LESS CSS preprocessor.
 
 ## Gulp tasks
 

@@ -1,11 +1,11 @@
 var gulp = require("gulp");
 var gutil = require('gulp-util');
 var browserify = require('gulp-browserify');
+var babelify = require('babelify');
 var webserver = require('gulp-webserver');
 var jshint = require('gulp-jshint');
 var jshintStylish = require('jshint-stylish');
 var jest = require('jest-cli');
-var jstransformVisitors = require('./tools/jstransformVisitors');
 var less = require('gulp-less');
 
 var config = {
@@ -32,9 +32,7 @@ gulp.task('build-js', ['jshint'], function() {
         .pipe(browserify({
             /* PENDING: deprecated */
             debug: !gulp.env.production,
-            transform: [
-                [ { visitors: jstransformVisitors }, 'jstransformify' ]
-            ]
+            transform: babelify
         }))
         .on('error', function(err) {
             console.error('=== BROWSERIFY BUILD FAILED ===');
@@ -75,7 +73,7 @@ gulp.task('test', function(done) {
     console.log('Running unit tests.');
     var jestConfig = {
         rootDir: config.sourceRoot,
-        scriptPreprocessor: '../tools/jest-preprocessor.js',
+        scriptPreprocessor: '../node_modules/babel-jest',
     };
 
     jest.runCLI({ config : jestConfig }, ".", function() {
